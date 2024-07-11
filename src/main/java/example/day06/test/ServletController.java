@@ -15,23 +15,29 @@ public class ServletController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("request Data : "+req.getParameter("data"));
-        resp.getWriter().print("response Data : [get] client Hi");
-
+        int result = Integer.parseInt(req.getParameter("data"));
+        resp.getWriter().print(result+2);
     }
     // 2. post
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        System.out.println("request Data : "+req.getParameter("data"));
+        int result = Integer.parseInt(req.getParameter("data"));
+        resp.getWriter().print(result*2);
     }
     // 3. put
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        System.out.println("request Data : "+req.getParameter("data"));
+        int result = Integer.parseInt(req.getParameter("data"));
+        resp.getWriter().print(result/2);
     }
     // 4. delete
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        System.out.println("request Data : "+req.getParameter("data"));
+        int result = Integer.parseInt(req.getParameter("data"));
+        resp.getWriter().print(result%2);
     }
 
 }   // class end
