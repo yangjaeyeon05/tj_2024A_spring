@@ -22,6 +22,16 @@ HTTP : 하이퍼텍스트 전송 프로토콜
                 - doPut()       : (HTTP PUT 요청) HTTP를 이용한 웹서버로부터 요청이 들어올때 HTTP의 METHOD가 PUT이면 호출되는 메소드/함수
                 - doDelete()    : (HTTP DELETE 요청) HTTP를 이용한 웹서버로부터 요청이 들어올때 HTTP의 METHOD가 DELETE이면 호출되는 메소드/함수
 
+            4. HTTP 요청의 자료/데이터 주고 받기
+                http://ip주소:port번호/서블릿주소?key=value
+                    - 쿼리스트링 url?key=value?key=value?key=value
+                1. HttpServletRequest   : 클라이언트로부터 요청 받을 때 요청 정보를 가지는 클래스
+                    - 메소드
+                        .getParameter("key") : 해당하는 key의 value 데이터를 문자열 타입 반환
+                2. HttpServletResponse  : 클라이언트로부터 응답 보낼 때 응답 정보를 가지는 클래스
+                    - 매소드
+                        .getWriter().print("value") : 해당하는 value를 요청보낸 클라이언트에게 응답 값을 보낸다.
+
 브라우저 : 크롬 , 엣지 , 사파리 등등 웹서비스를 사용할 수 있는 웹 프로그램
     - 브라우저 상단에 웹주소 입력하는 창은 HTTP의 GET 메소드 방식만 지원
 

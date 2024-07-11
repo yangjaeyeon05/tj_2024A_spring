@@ -13,13 +13,13 @@ public class Step1 {
                 // - 기본타입의 데이터가 메소드/기능을 사용해야 되는 경우가 있을 수 있다. (주로 타입변환)
         int value1 = 100;                         // 기본타입 100
         // value1.                                // 도트 연산자를 사용할 수 없다.
-        Integer value2 = new Integer(100);  // 참조타입 100
-        value2.intValue();                        // 도트 연산자를 사용할 수 있다. (참조타입 , 클래스)
+        // Integer value2 = new Integer(100);  // 참조타입 100
+        // value2.intValue();                        // 도트 연산자를 사용할 수 있다. (참조타입 , 클래스)
 
         // - 자주 사용되는 메소드
             // 1. .intValue(); : 기본타입의 값을 반환하는 메소드
-        int myValue = value2.intValue();
-        System.out.println("myValue = " + myValue);
+        // int myValue = value2.intValue();
+        // System.out.println("myValue = " + myValue);
 
             // 2. Integer.valueOf(정수 또는 문자열) ; Integer 객체 반환 메소드
         Integer value3 = Integer.valueOf("100");
@@ -35,9 +35,9 @@ public class Step1 {
         long value10 = Long.parseLong("3000000");
 
             // 4. 오토박싱 , 언박싱
-        int value11 = value1+value2;    // 기본타입 + 참조타입(언박싱)
-        System.out.println("value11 = " + value11);
-        Integer value12 = value11;      // 참조타입 = 기본타입(오토박싱)
+        // int value11 = value1+value2;    // 기본타입 + 참조타입(언박싱)
+        // System.out.println("value11 = " + value11);
+        // Integer value12 = value11;      // 참조타입 = 기본타입(오토박싱)
         
         // ================================================= //
         // [1]
