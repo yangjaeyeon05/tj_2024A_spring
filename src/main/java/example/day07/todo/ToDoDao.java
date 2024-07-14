@@ -58,7 +58,7 @@ public class ToDoDao {
         }
         return false;
     }
-
+    // 내용 업데이트 위한 리스트 가져오기
     public ToDoDto getToDoDto( int tno){
         try {
             String  sql="select * from todo where tno=?";
@@ -77,7 +77,7 @@ public class ToDoDao {
         }
         return  null;
     }
-
+    // 내용 수정
     public boolean update(ToDoDto toDoDto){
         try {
                 String sql="update todo set state= ? where tno=? ";
@@ -92,7 +92,7 @@ public class ToDoDao {
         }
         return  false;
     }
-
+    // 내용 삭제
     public  boolean deleteContent(ToDoDto toDoDto){
         try {
             String sql="delete from todo where tno = ? ";
@@ -106,7 +106,4 @@ public class ToDoDao {
         }
         return  false; // 실패
     }
-
-
-
 }   // class end
