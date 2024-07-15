@@ -1,6 +1,4 @@
-package example.day07.todo;
-
-import jakarta.servlet.http.HttpServletRequest;
+package example.day08.todo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,8 +22,23 @@ public class ToDoDao {
     public static ToDoDao getInstance(){
         return toDoDao;
     }
-    // 내용 프린트
-    public ArrayList<ToDoDto> print(){
+    // 1. 할일 등록
+    public boolean todoCreate(String content){
+        try{
+            String sql = "insert into todo(content) values(?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,content);
+            int count = ps.executeUpdate();
+            if(count == 1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }   // todoCreate() end
+    // 2. 할일 전체 출력
+    public ArrayList<ToDoDto> todoReadAll(){
         ArrayList<ToDoDto> list = new ArrayList<>();
         try{
             String sql = "select * from todo";
@@ -42,63 +55,41 @@ public class ToDoDao {
             System.out.println(e);
         }
         return list;
-    }
-    // 내용 저장
-    public boolean addContent(ToDoDto toDoDto){
-        try{
-            String sql = "insert into todo(content) values(?)";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1,toDoDto.getContent());
-            int count = ps.executeUpdate();
-            if(count == 1){
-                return true;
-            }
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return false;
-    }
-    // 내용 업데이트 위한 리스트 가져오기
-    public ToDoDto getToDoDto( int tno){
+    }   // todoReadAll() end
+    // 3. 할일 (상태 )수정
+    public boolean todoUpdate(int tno){
         try {
-            String  sql="select * from todo where tno=?";
-            ps=conn.prepareStatement(sql);//실행
-            ps.setInt(1,tno); //번호찾기
-            rs=ps.executeQuery(); //전체출력
-            if (rs.next()){ //가져온값이 있으면
-                ToDoDto dto = new ToDoDto();
-                dto.setTno( rs.getInt(1));
-                dto.setContent( rs.getString(2));
-                dto.setState( rs.getInt(3));
-                return dto;
-            }
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
-    }
-    // 내용 수정
-    public boolean update(ToDoDto toDoDto){
-        try {
+            // 수정 전 상태 조회
+            String sql2 = "select * from todo where tno=?";
+            ps = conn.prepareStatement(sql2);
+            ps.setInt(1,tno);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                // 기존상태
+                int state = rs.getInt("state");
+                // 상태 변경 : 기존 상태가 0이면 1 , 1이면 0으로
+                state = state == 0 ? 1 : 0;
+                // 수정 코드
                 String sql="update todo set state= ? where tno=? ";
                 ps= conn.prepareStatement(sql);
-                ps.setInt(1,toDoDto.getState());
-                ps.setInt(2,toDoDto.getTno());
+                ps.setInt(1,state);
+                ps.setInt(2,tno);
                 int count = ps.executeUpdate();
                 if(count == 1){
                     return true;
                 }
+            }
         }catch (Exception e){
             System.out.println(e);
         }
         return false;
-    }
-    // 내용 삭제
-    public  boolean deleteContent(ToDoDto toDoDto){
+    }   // todoUpdate() end
+    // 4. 할일 삭제
+    public  boolean todoDelete(int tno){
         try {
-            String sql="delete from todo where tno = ? ";
+            String sql = "delete from todo where tno = ? ";
             ps= conn.prepareStatement(sql);
-            ps.setInt(1,toDoDto.getTno());
+            ps.setInt(1,tno);
             int count = ps.executeUpdate();
             if(count == 1){
                 return true;
@@ -107,5 +98,5 @@ public class ToDoDao {
             System.out.println(e);
         }
         return false; // 실패
-    }
+    }   // todoDelete() end
 }   // class end

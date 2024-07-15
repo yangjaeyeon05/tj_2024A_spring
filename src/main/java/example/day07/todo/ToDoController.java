@@ -44,4 +44,5 @@ public class ToDoController {
         dto.setTno(tno);
         return ToDoDao.getInstance().deleteContent(dto);
     }
-}
+
+}   // class end
