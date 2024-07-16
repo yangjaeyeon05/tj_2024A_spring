@@ -26,6 +26,9 @@ dependencies {
     // implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
     // [4] 타임리프 탬플릿 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // [5] lombok 라이브러리
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

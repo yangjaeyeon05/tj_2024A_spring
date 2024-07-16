@@ -1,4 +1,6 @@
-package example.day08.board;
+package example.day09.board;
+
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,11 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+@Component
 public class BoardDao {
-    private static BoardDao boardDao = new BoardDao();
+
     Connection conn;
     PreparedStatement ps;
     ResultSet rs;
+    // DB 연동
     private BoardDao (){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,9 +22,6 @@ public class BoardDao {
         }catch (Exception e){
             System.out.println(">> 연동 실패"+e);
         }   // try end
-    }
-    public static BoardDao getInstance(){
-        return boardDao;
     }
 
     // 1. 게시판 등록
