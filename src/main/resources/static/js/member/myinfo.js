@@ -5,7 +5,7 @@ function getMypage(){
     console.log('getMypage()');
     $.ajax({
         method : 'get' ,
-        url : "/member/myinfo" ,
+        url : "/member/my/info" ,
         success : (result) => {
             console.log(result);
             if(result == ''){

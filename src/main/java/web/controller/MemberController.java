@@ -42,7 +42,7 @@ public class MemberController {
     }   // doLogout() end
 
     // 마이페이지 구현
-    @GetMapping("/myinfo")
+    @GetMapping("/my/info")
     public MemberDto getMypage(){
         return memberService.getMypage();
     }   // getMypage() end
