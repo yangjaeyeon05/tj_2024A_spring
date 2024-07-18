@@ -28,9 +28,10 @@ function doSignup(){
             }else{
                 alert('회원가입 실패');
             }
-        }
+        }   // success end
       }); // ajax end
-      alert('ajax 처리 이후');
+
+      // alert('ajax 처리 이후');
     // async : true  ,  alert('ajax 처리 이후'); -> alert('회원가입성공');
     // async : false ,  alert('회원가입성공'); ->  alert('ajax 처리 이후');
-} // method end
+} // doSignup() end

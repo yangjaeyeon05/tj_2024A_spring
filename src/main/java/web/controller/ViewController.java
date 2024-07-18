@@ -21,4 +21,17 @@ public class ViewController {
     public String mLogin(){
         return "/member/login.html";
     }
+    @GetMapping("/member/findid")
+    public String mFindId(){
+        return "/member/findid.html";
+    }
+    @GetMapping("/member/findpw")
+    public String mFindPw(){
+        return "/member/findpw.html";
+    }
+    @GetMapping("/member/mypage")
+    public String myinfo(){
+        return "/member/myinfo.html";
+    }
+
 }   // class end
