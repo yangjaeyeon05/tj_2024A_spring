@@ -8,6 +8,10 @@ function getMypage(){
         url : "/member/myinfo" ,
         success : (result) => {
             console.log(result);
+            if(result == ''){
+                alert('로그인 후 이용 가능합니다.');
+                location.href="/member/login";
+            }
             // 어디에
             let myinfo = document.querySelector(`#myinfo`);
             // 무엇을

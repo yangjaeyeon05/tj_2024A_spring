@@ -57,13 +57,13 @@ public class MemberDao extends Dao{
             ps.setInt(1, no);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                MemberDto memberDto = new MemberDto();
-                memberDto.setNo(rs.getInt("no"));
-                memberDto.setId(rs.getString("id"));
-                memberDto.setName(rs.getString("name"));
-                memberDto.setEmail(rs.getString("email"));
-                memberDto.setPhone(rs.getString("phone"));
-                return memberDto;
+                return MemberDto.builder()
+                        .no(rs.getInt("no"))
+                        .id(rs.getString("id"))
+                        .name(rs.getString("name"))
+                        .email(rs.getString("email"))
+                        .phone(rs.getString("phone"))
+                        .build();
             }
         }catch (Exception e){
             System.out.println(e);

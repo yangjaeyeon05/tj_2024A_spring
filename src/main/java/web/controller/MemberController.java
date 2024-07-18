@@ -46,4 +46,5 @@ public class MemberController {
     public MemberDto getMypage(){
         return memberService.getMypage();
     }   // getMypage() end
+
 }   // class end
