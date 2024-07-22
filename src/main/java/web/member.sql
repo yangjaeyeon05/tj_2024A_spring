@@ -14,3 +14,23 @@ create table member(
 );
 
 select * from member;
+
+
+-- [2] 로그인 
+select * from member where id = 'qwe' and pw ='qwe';
+
+-- [4] 아이디 중복검사
+select * from member where id = 'yang2701';
+select * from member where id = 'YANG2701';
+	-- 만일 대소문자를 구분하는 데이터 검색할때는 binary(필드) 사용
+    -- binary(필드) : 문자가 아닌 바이트를 기준으로 비교, 검색한다.
+    
+select * from member where binary(id) = 'yang2701';	-- 소문자 yang
+select * from member where binary(id) = 'YANG2701'; -- 대문자 YANG  
+
+
+
+
+
+
+

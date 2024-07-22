@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
 
@@ -67,12 +68,17 @@ public class MemberService {
     // 5. 마이페이지
     public MemberDto getMypage(){
         // 1. 로그인된 회원번호
-       MemberDto loginDto = doLoginCheck(); // 로그인된 세샨 정보 요청
+       MemberDto loginDto = doLoginCheck(); // 로그인된 세션 정보 요청
        if(loginDto == null)return null; // 비로그인이면 리턴
        int no = loginDto.getNo();
        // 2.
        return memberDao.getMypage(no);
     }   // getMypage() end
+
+    // 아이디중복검사
+    public boolean idcheck(String id){
+        return memberDao.idcheck(id);
+    }   // idcheck() end
 
 }   // class end
 

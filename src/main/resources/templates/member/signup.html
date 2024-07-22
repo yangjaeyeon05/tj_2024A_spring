@@ -9,15 +9,24 @@
 
     회원가입 페이지
     <form>
-        아이디 : <input id="id" /> <br/>
-        비밀번호 : <input id="pw"/> <br/>
-        이름 : <input id="name"/> <br/>
-        이메일 : <input id="email"/> <br/>
-        연락처 : <input id="phone"/> <br/>
+        아이디 : <input id="id" onkeyup="idCheck()" /> <div id="idCheckBox"> </div>
+
+        비밀번호 : <input id="pw" type="password" onkeyup="pwCheck()" /> <br/>
+        비밀번호 확인 : <input id="pwConfirm" type="password" onkeyup="pwCheck()"/> 
+        <div id="pwCheckBox"> </div>
+
+        이름 : <input id="name" onkeyup="nameCheck()" /> 
+        <div id="nameCheckBox"> </div>
+
+        연락처 : <input id="phone" onkeyup="phoneCheck()" />
+        <div id="phoneCheckBox"> </div>
+
+        이메일 : <input id="email" onkeyup="emailCheck()" /> <br/>
+        <div id="emailCheckBox"> </div>
+
         <button type="button" onclick="doSignup()">회원가입</button>
     </form>
 
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/js/member/signup.js"></script>
 
     <div th:replace="~{/footer.html:: footer}"></div>

@@ -2,6 +2,7 @@ package web.model.dao;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import web.model.dto.MemberDto;
 
 import java.sql.PreparedStatement;
@@ -70,5 +71,23 @@ public class MemberDao extends Dao{
         }
         return null;
     }   // getMypage() end
+
+    // 아이디중복검사
+    public boolean idcheck(String id){
+        System.out.println("MemberDao.idcheck");
+        System.out.println("id = " + id);
+        try{
+            String sql = "select id from member where binary(id) = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;    // 중볻이다.
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;   // 중복이 아니다.
+    }   // idcheck() end
 
 }   // class end

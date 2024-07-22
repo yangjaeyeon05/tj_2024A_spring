@@ -47,4 +47,10 @@ public class MemberController {
         return memberService.getMypage();
     }   // getMypage() end
 
+    // 아이디중복검사
+    @GetMapping("/idcheck")
+    public boolean idcheck(String id){
+        return memberService.idcheck(id);
+    } // idcheck() end
+
 }   // class end
