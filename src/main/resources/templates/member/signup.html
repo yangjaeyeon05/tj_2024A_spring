@@ -21,7 +21,9 @@
         연락처 : <input id="phone" onkeyup="phoneCheck()" />
         <div id="phoneCheckBox"> </div>
 
-        이메일 : <input id="email" onkeyup="emailCheck()" /> <br/>
+        이메일 : <input id="email" onkeyup="emailCheck()" />
+        <button class="authBtn" type="button" onclick="doAuth()" disabled> 인증요청 </button>
+        <div class="authBox"></div>
         <div id="emailCheckBox"> </div>
 
         <button type="button" onclick="doSignup()">회원가입</button>
