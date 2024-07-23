@@ -53,4 +53,15 @@ public class MemberController {
         return memberService.idcheck(id);
     } // idcheck() end
 
+    // 회원 탈퇴
+    @DeleteMapping("/leave")
+    public boolean leave(String pwConfirm){
+        return memberService.leave(pwConfirm);
+    }   // leave() end
+
+    // 내정보수정
+    @PutMapping("/update")
+    public boolean infoupdate(String pwConfirm , String pw , String name , String phone , String email){
+        return memberService.infoupdate(pwConfirm , pw , name , phone , email);
+    }   // infoupdate() end
 }   // class end

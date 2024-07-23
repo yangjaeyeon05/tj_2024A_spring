@@ -10,6 +10,7 @@ console.log("signup.js");
 
 // 6. 이메일 유효성검사
 function emailCheck(){
+    checkArray[4] = false;
     // 인증버튼 비활성화
     authBtn.disabled = true;
     let email = document.querySelector("#email").value;
@@ -41,8 +42,10 @@ function phoneCheck(){
     if(phoneReg.test(phone)){
         // 중복검사 생략
         phoneCheckBox.innerHTML = '사용가능한 전화번호입니다.'
+        checkArray[3] = true;
     }else{
         phoneCheckBox.innerHTML = '000-0000-0000 또는 00-000-0000 형식으로 입력해주세요.'
+        checkArray[3] = false;
     }
 }   // phoneCheck() end
 
@@ -54,6 +57,20 @@ let timerInterval = null;                           // 타이머 인터벌 객�
 // 7. 이메일 인증 요청
 function doAuth(){
     console.log('doAuth()');
+    checkArray[4] = false;
+    // --- AJAX 인증번호 요청 통신
+    $.ajax({
+        async : false , 
+        method : 'get' , 
+        url : "/auth/code" , 
+        data : { email : document.querySelector("#email").value } , 
+        success : (result)=>{
+            console.log(result);
+            if(result){
+                alert('메일로 인증코드 전송했습니다.')
+            }
+        }   // success end
+    })  // ajax end
     // 인증버튼 비활성화 - 인증을 한번 누른 후 다시 누를 수 없도록
     authBtn.disabled = true;
     // 1. 인증 번호 입력 구역 구성
@@ -83,6 +100,7 @@ function doAuth(){
             clearInterval(timerInterval);
             authBox.innerHTML = '다시 인증 요청 해주세요.';
             authBtn.disabled = false;   // 인증 버튼 요청 활성화
+            checkArray[4] = false;
         }   // if end
     },1000)  // setInterval() end
 }   // doAuth() end 
@@ -93,14 +111,22 @@ function doAuthCode(){
     // 1. 입력한 인증번호 가져오기
     let authCodeInput = document.querySelector(".authCodeInput").value;
     // * 임의의 인증번호 (JS에서 인증번호를 관리하지 않는 이유 : JS는 클라이언트로부터 오픈코드이기 때문에)
-    let authCode = 1234;
-    // 2. 만약에 입력한 값이 인증번호와 동일하면 인증 성공
-    if(authCode == authCodeInput){
-        authBox.innerHTML = '인증성공';
-        clearInterval(timerInterval);   // 인터벌 종료
-    }else{
-        alert('인증번호가 일치하지 않습니다.');
-    }
+    $.ajax({
+        async : false , 
+        method : 'post' , 
+        url : "/auth/check" , 
+        data : { authCodeInput : authCodeInput } , 
+        success : (reault) => {
+            if(reault){
+                authBox.innerHTML = '인증성공';
+                clearInterval(timerInterval);   // 인터벌 종료
+                checkArray[4] = true;
+            }else{
+                alert('인증번호가 일치하지 않습니다.');
+                checkArray[4] = false;
+            }
+        }   // success end
+    })  // ajax end
 }   // doAuthCode() end
 
 // 4. 이름 유효성검사
@@ -110,8 +136,10 @@ function nameCheck(){
     let nameReg = /^[가-힣]{2,20}$/
     if(nameReg.test(name)){
         nameCheckBox.innerHTML = '통과'
+        checkArray[2] = true;
     }else{
         nameCheckBox.innerHTML = '한글 2~20글자 사이 입력해주세요.'
+        checkArray[2] = false;
     }
 }   // nameCheck() end
 
@@ -129,14 +157,17 @@ function pwCheck(){
         if(pwReg.test(pwConfirm)){  // 비밀번호 확인 정규표현식 검사
             if(pw == pwConfirm){    // 두 비밀번호 일치 여부 
                 pwCheckBox.innerHTML = '통과';
+                checkArray[1] = true;
                 return;
             }else{
                 pwCheckBox.innerHTML = '두 비밀번호가 일치하지 않습니다.';
+                checkArray[1] = false;
                 return;
             }
         }
     }
     pwCheckBox.innerHTML = '영대소문자와 숫자 조합의 5~30글자 사이만 가능합니다.';
+    checkArray[1] = false;
 }   // pwCheck() end
 
 // 2. 아이디유효성검사
@@ -161,19 +192,34 @@ function idCheck(){
                 console.log(result);
                 if(result==true){
                     idCheckBox.innerHTML = '사용중인 아이디입니다.'
+                    checkArray[0] = false;
                 }else{
                     idCheckBox.innerHTML = '사용가능한 아이디입니다.'
+                    checkArray[0] = true;
                 }
             }   // success end
         }); // ajax end
     }else{
         idCheckBox.innerHTML = '영대소문자와 숫자 조합의 5~30글자 사이만 가능합니다.';
+        checkArray[0] = false;
     }
 }   // idCheck() end
+
+// ****** 현재 유효성검사 체크 현황
+let checkArray = [ false , false , false , false , false ]
+                // 아이디 , 비밀번호 , 이름 , 연락처 , 이메일
 
 // 1. 회원가입
 function doSignup(){
     console.log("doSignup()");
+    // 유효성 검사 체크
+    for(let i = 0; i < checkArray.length; i++){
+        if(!checkArray[i]){
+            alert('유효하지 않는 정보가 있습니다.');
+            return;
+        }
+    }   // 하나라도 false 이면 회원가입 실패
+    console.log(checkArray);
     // 1. 입력값 가져오기
     let id = document.querySelector("#id").value;
     let pw = document.querySelector("#pw").value;

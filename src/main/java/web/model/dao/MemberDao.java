@@ -2,7 +2,9 @@ package web.model.dao;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import web.model.dto.MemberDto;
 
 import java.sql.PreparedStatement;
@@ -89,5 +91,43 @@ public class MemberDao extends Dao{
         }
         return false;   // 중복이 아니다.
     }   // idcheck() end
+
+    // 회원 탈퇴
+    public boolean leave(String pwConfirm , int no){
+        try{
+            String sql = "delete from member where no = ? and pw = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1 , no);
+            ps.setString(2 ,pwConfirm);
+            int count = ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }   // // leave() end
+
+    // 내정보수정
+    public boolean infoupdate(String pwConfirm , String pw , String name , String phone , String email , int no){
+        try{
+            String sql = "update member set name = ? , pw = ? , phone = ? , email = ? where no = ? and pw = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, pw);
+            ps.setString(3, phone);
+            ps.setString(4 , email);
+            ps.setInt(5 , no);
+            ps.setString(6 , pwConfirm);
+            int count = ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }   // infoupdate() end
 
 }   // class end

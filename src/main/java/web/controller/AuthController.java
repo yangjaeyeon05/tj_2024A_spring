@@ -13,10 +13,11 @@ public class AuthController {
 
     // 1. 인증번호 요청/생성
     @GetMapping("/code")
-    public boolean doAuth(){
-        return authService.doAuth();
+    public boolean doAuth(String email){
+        return authService.doAuth(email);
     }   // doAuth() end
 
+    // 2. 입력받은 값과 인증번호를 비교
     @PostMapping("/check")
     public boolean doAuthCode(String authCodeInput){
         return authService.doAuthCode(authCodeInput);

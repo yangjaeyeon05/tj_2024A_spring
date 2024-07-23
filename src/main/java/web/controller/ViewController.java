@@ -33,5 +33,14 @@ public class ViewController {
     public String myinfo(){
         return "/member/myinfo.html";
     }
+    @GetMapping("/member/update")
+    public String myInfoUpdate(){
+        return "/member/update.html";
+    }
+    @GetMapping("/member/leave")
+    public String myInfoLeave(){
+        return "/member/leave.html";
+    }
+
 
 }   // class end

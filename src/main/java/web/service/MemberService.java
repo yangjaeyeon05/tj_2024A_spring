@@ -4,7 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
 
@@ -30,8 +32,11 @@ public class MemberService {
         System.out.println("memberDto = " + memberDto);
 
         int result = memberDao.doLogin(memberDto);
+        System.out.println(memberDto);
+        System.out.println("result = " + result);
         if(result >= 1) {   // 만약에 로그인 성공시
             // - 빌더패턴 : 생성자가 아닌 메소드를 이용한 방식의 객체 생성
+
             MemberDto loginDto = MemberDto.builder()
                     .no(result)
                     .id(memberDto.getId())
@@ -41,6 +46,7 @@ public class MemberService {
             HttpSession session = request.getSession();
             // 2. 세션객체에 속성 추가
             session.setAttribute("loginDto", loginDto);
+            System.out.println(loginDto);
             return true;
         }
         return false;
@@ -79,6 +85,30 @@ public class MemberService {
     public boolean idcheck(String id){
         return memberDao.idcheck(id);
     }   // idcheck() end
+
+    // 회원 탈퇴
+    public boolean leave(String pwConfirm){
+        // boolean result = confirmPw(pwConfirm);
+        MemberDto memberDto = (MemberDto)request.getSession().getAttribute("loginDto");
+        if(memberDto==null){
+            return false;
+        }
+        int no = memberDto.getNo();
+        System.out.println(no);
+        boolean result = memberDao.leave(pwConfirm , no);
+        if(result){
+            doLogout();
+            return true;
+        }
+        return false;
+    }   // leave() end
+
+    // 내정보수정
+    public boolean infoupdate(String pwConfirm , String pw , String name , String phone , String email){
+        int no = doLoginCheck().getNo();
+        return memberDao.infoupdate(pwConfirm , pw , name , phone , email , no);
+    }   // infoupdate() end
+
 
 }   // class end
 

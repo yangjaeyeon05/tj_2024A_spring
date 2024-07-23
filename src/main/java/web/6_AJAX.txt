@@ -1,0 +1,29 @@
+AJAX
+    - JQUERY 라이브러리에서 만들어진 함수
+    - JQUERY : JS 기반의 라이브러리
+    - 설치 : HTML에 JQUERY 코드 등록
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    - 비동기 방식의 HTTP 기반 통신
+        - 비동기 : 요청후 응답을 기다리지 않는다.
+        - 동기 : 요청후 응답이 올때까지 다른 작업을 대기 상태
+    - 문법
+        1. $.ajax(옵션);
+        2. 옵션 = {속성 : 값 , 속성 : 값 , 속성 : 값}
+        - $.ajax({
+            속성 : 값 ,
+            속성 : 값 ,
+            속성 : 값
+        });
+
+    - 속성
+        1. async : true
+            true : 기본값/생략시(비동기) , false : 동기
+        2. method : HTTP method 선택 (GET , POST , PUT , DELETE)
+        3. url : HTTP url 경로
+            - 주로 spring controller 의 매핑 메소드와 일치해서 작성해야 한다.
+        4. data : {key : value , key : value , key : value} : HTTP 보낼 데이터
+            - json형식 : JSON.Stringify({key : value , key : value , key : value})
+        5. contentType : ""                                 : HTTP 보낼 데이터의 타입/형식
+            - 기본값/생략시 :
+            - "application/json"
+        6. success : ()=>{}                                 : HTTP 받을 데이터
