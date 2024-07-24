@@ -18,3 +18,12 @@
 
     @Service
         - 스프링 MVC에서 비즈니스 로직 (실질적인 코드/주요 코드)을 담당하는 역할
+
+    @RequestBody
+            - 해당 컨트롤 클래스의 메소드가 HTTP로 요청 받을때 데이터를 JSON 를 JAVA객체( DTO , 컬렉션프레임워크 ) 으로 변환
+            - HTTP request contentType : "application/json"
+            - 변환시 주의할점 : 1. 타입 일치 2. JSON 필드명 과 DTO 필드명 일치
+
+    @ResponseBody
+        - 해당 컨트롤 클래스의 메소드가 HTTP로 응답 할때 데이터를 JAVA객체 를 JSON 으로 변환
+        - HTTP response contentType : "application/json"

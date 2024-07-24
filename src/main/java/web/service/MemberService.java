@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
 
+import java.util.Map;
+
 @Service
 public class MemberService {
 
@@ -104,10 +106,17 @@ public class MemberService {
     }   // leave() end
 
     // 내정보수정
-    public boolean infoupdate(String pwConfirm , String pw , String name , String phone , String email){
-        int no = doLoginCheck().getNo();
-        return memberDao.infoupdate(pwConfirm , pw , name , phone , email , no);
-    }   // infoupdate() end
+    public boolean doUpdate(Map<String , String> map){
+        // 1. 현재 로그인도니 회원번호 추출
+        MemberDto loginDto = doLoginCheck();
+        if(loginDto==null){
+            return false;
+        }
+        int loginNo = doLoginCheck().getNo();
+        // 2. 로그인된 회원번호 map 엔트리에 추가
+        map.put("no" , String.valueOf(loginNo));
+        return memberDao.doUpdate(map);
+    }   // doUpdate() end
 
 
 }   // class end

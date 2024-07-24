@@ -9,6 +9,7 @@ import web.model.dto.MemberDto;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Map;
 
 @Component
 public class MemberDao extends Dao{
@@ -110,16 +111,15 @@ public class MemberDao extends Dao{
     }   // // leave() end
 
     // 내정보수정
-    public boolean infoupdate(String pwConfirm , String pw , String name , String phone , String email , int no){
+    public boolean doUpdate(Map<String , String> map){
         try{
-            String sql = "update member set name = ? , pw = ? , phone = ? , email = ? where no = ? and pw = ?";
+            String sql = "update member set name = ? , pw = ? , phone = ? where no = ? and pw = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, pw);
-            ps.setString(3, phone);
-            ps.setString(4 , email);
-            ps.setInt(5 , no);
-            ps.setString(6 , pwConfirm);
+            ps.setString(1, map.get("name"));
+            ps.setString(2, map.get("newPw"));
+            ps.setString(3, map.get("phone"));
+            ps.setInt(4 , Integer.parseInt(map.get("no")));
+            ps.setString(5 , map.get("pw"));
             int count = ps.executeUpdate();
             if(count==1){
                 return true;
@@ -128,6 +128,6 @@ public class MemberDao extends Dao{
             System.out.println(e);
         }
         return false;
-    }   // infoupdate() end
+    }   // doUpdate() end
 
 }   // class end

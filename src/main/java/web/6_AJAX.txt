@@ -4,26 +4,34 @@ AJAX
     - 설치 : HTML에 JQUERY 코드 등록
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     - 비동기 방식의 HTTP 기반 통신
-        - 비동기 : 요청후 응답을 기다리지 않는다.
-        - 동기 : 요청후 응답이 올때까지 다른 작업을 대기 상태
+        - 비동기 : 요청후 응답이 올떄까지 다른 작업 수행
+        - 동기 : 요청후 응답이 올때까지 다른 작업을 대기 상태.
     - 문법
-        1. $.ajax(옵션);
-        2. 옵션 = {속성 : 값 , 속성 : 값 , 속성 : 값}
-        - $.ajax({
+        1. $.ajax( 옵션 );
+        2. 옵션 = { 속성 : 값 , 속성 : 값 , 속성 : 값  }
+        - $.ajax( {
             속성 : 값 ,
             속성 : 값 ,
             속성 : 값
-        });
+        })
 
     - 속성
         1. async : true
             true : 기본값/생략시(비동기) , false : 동기
-        2. method : HTTP method 선택 (GET , POST , PUT , DELETE)
-        3. url : HTTP url 경로
-            - 주로 spring controller 의 매핑 메소드와 일치해서 작성해야 한다.
-        4. data : {key : value , key : value , key : value} : HTTP 보낼 데이터
-            - json형식 : JSON.Stringify({key : value , key : value , key : value})
-        5. contentType : ""                                 : HTTP 보낼 데이터의 타입/형식
-            - 기본값/생략시 :
-            - "application/json"
-        6. success : ()=>{}                                 : HTTP 받을 데이터
+        2. method : HTTP method 선택 ( GET , POST , PUT , DELETE )
+        3. url : HTTP URL 통신 경로
+            - 쿼리스트링 : url?key=value&key&value
+        4. data : { key : value , key : value }                   : HTTP 보낼 데이터
+        5. contentType : ""                                       : HTTP 보낼 데이터의 타입/형식 , 받는사람이 데이터를 받는 데이터를 처리하는 분류방식
+            - 기본값/생략시 : content-type: application/x-www-form-urlencoded;    @RequestParam
+            - contentType : "application/json"
+            - data : JSON.stringify( { } )
+        6. success : ( r ) => { }                                : 통신 성공 시 실행되는 함수 -> 응답 데이터가 함수의 매개변수로 받는다,
+        7. error : ( e ) => { }                                  : 통신 실패 시 실행되는 함수 -> 실패 사유가 함수의 매개변수로 받는다.
+
+         * 참고
+              HTTP 통신 필요한 이유 : HTTP는 문자열/바이트 데이터만 주고 받는다.
+              JSON.stringify( ) : JS 객체타입을 문자열타입 으로 변환
+                  { key : value }  =>  "{ key : value }"
+              JSON.parse( )     : 문자열타입을 JS객체타입 으로 변환
+                  "{ key : value }" => { key : value }
