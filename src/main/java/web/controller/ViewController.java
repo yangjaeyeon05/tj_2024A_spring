@@ -2,6 +2,8 @@ package web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // == AJAX 통신용이 아닌 템플릿 반환하는 컨트롤러 == //
 // @RestController // @Controller + @ResponseBody(응답 JSON객체)
@@ -41,6 +43,21 @@ public class ViewController {
     public String myInfoLeave(){
         return "/member/leave.html";
     }
-
+    //[9] 글전체 출력 페이지
+    @GetMapping("/board/getall")
+    public String getAll(){
+        return "/board/boardgetall.html";
+    }
+    //[10] 글 작성 페이지
+    @GetMapping("/board/write")
+    public String boardWrite(){
+        System.out.println("ViewController.boardWrite");
+        return "/board/boardwrite.html";
+    }
+    // 11 글 상세 페이지
+    @GetMapping("/board/getread")
+    public String boardRead(){
+        return "/board/boardread.html";
+    }
 
 }   // class end
