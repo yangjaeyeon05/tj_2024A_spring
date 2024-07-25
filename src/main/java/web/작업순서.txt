@@ -124,3 +124,63 @@
     [5] HTML · JS 에서 AJAX 이용한 탈퇴 구현
         - 성공시 '탈퇴 성공' alert 출력 후 로그아웃
         - 실패시 '탈퇴 실패' alert 출력
+
+
+
+페이지 요청 기획( 네이버 주식 종목 게시판 참고 )
+    1. 글 쓰기 페이지 요청 , 글 전체 페이지에서 글쓰기 클릭했을때
+        - 현재 로그인이 안된 상태이면 로그인페이지로 이동
+    2. 글 전체 페이지 요청 , 헤더에서 게시판 <a> 클릭했을때.
+    3. 글 상세 페이지 요청 , 글 전체 페이지에서 글 제목을 클릭했을때
+        - 현재 로그인된 회원이 현재 작성한 글이면 [삭제] , [수정] 활성화 하기
+    4. 글 수정 페이지 요청 , 글 상세 페이지에서 글 수정 버튼을 클릭했을때
+기능구현 기획
+    1. 글 쓰기 처리
+        1. 입력사항 : bcno(select) , btitle , bcontent
+        2. 현재 로그인된 회원만 글쓰기 가능( 회원제 ) , 회원번호( loginNo )
+    2. 글 전체 호출 처리
+        1. 출력사항 : 게시물번호 , 제목 , 작성자(id) , 작성일 , 조회수
+    3. 글 상세 호출 처리
+        1. 출력사항 : 카테고리명 , 게시물번호, 제목 , 내용 , 작성자(id) , 작성일 , 조회수
+        2. 게시물식별번호 : 쿼리스트링 활용 , tj_2024A_front/day19/view.js 참고
+    4. 글 수정 처리
+        1. 현재 로그인된 회원이 작성한 글이면 수정가능( 회원제 )
+        2. 수정사항 : title , bcontent , bcno(select)
+        3. 게시물식별번호 : 쿼리스트링 활용
+    5. 글 삭제 처리
+        1. 현재 로그인된 회원이 작성한 글이면 삭제가능( 회원제 )
+        2. 게시물식별번호 : 쿼리스트링 이용
+    6. 카테고리 전체 호출 처리 , 쓰기/수정 페이지 에서 bcno(select) 를 아래와 같은 형식으로 출력하기 위해서
+        <select>
+            <option value="1">자유</option>
+            <option value="2">자유</option>
+            <option value="3">판매</option>
+            <option value="4">구매</option>
+        </select>
+1. DB 설계
+2. MVC 설계 , DTO , DAO 클래스 설계
+    1. BoardDao
+    2. BoardDto , bcategory DTO 없음
+    3. BoardService
+    4. BoardController
+3. rest api 명세서
+--------------- 작업순서 예시
+1. 규칙
+    - 개발순서에서 전 순서가 완성되기 전까지 순서 단계 진행 불가
+    - 백엔드, 프론트 담당 대화 불가
+    - 명세서 담당 : 진행하면서 변경된 명세서 수정
+    - 강의 프로젝트 내에서 진행 : BoardDao, BoardDto , BoardService , BoardController 파일 만 사용.
+        - 그외 DTO 필요시 컬렉션 프레임워크 사용.
+
+2.
+                        front                       back                                               명세서
+글 전체 페이지 요청        HTML , 링크연결              viewController 매핑                               확인,수정
+글 쓰기 페이지 요청        HTML , 링크연결              viewController 매핑                               확인,수정
+글 상세 페이지 요청       HTML , 링크연결              viewController 매핑                                확인,수정
+글 수정 페이지 요청	    HTML , 링크연결              viewController 매핑                                확인,수정
+카테고리 호출             쓰기 , 수정 JS(AJAX)        BoardController , boardservice , boardDao           확인,수정
+글쓰기 처리              쓰기 JS(AJAX)               BoardController , boardservice , boardDao             확인,수정
+글 전체 호출 처리
+글 상세 호출 처리
+글 수정 처리
+글 삭제 처리

@@ -60,4 +60,9 @@ public class ViewController {
         return "/board/boardread.html";
     }
 
+    // 12 글 수정 페이지
+    @GetMapping("/board/edit")
+    public String bUpdate(){
+        return "/board/boardedit.html";
+    }
 }   // class end

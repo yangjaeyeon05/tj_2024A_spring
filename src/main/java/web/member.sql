@@ -69,7 +69,11 @@ select *from board;
 
 select * from board inner join member on board.no = member.no inner join bcategory on board.bcno = bcategory.bcno where bno = 4;
 
+-- 글쓰기
 insert into board(btitle,bcontent,no,bcno) values("테스트제목1","테스트내용1",1,1);
+-- 1번 회원이 1번 카테고리에 테스트제목1 의 제목과 테스트내용1 의 내용 작성
+-- JDBC : insert into board(btitle,bcontent,no,bcno) values(?,?,?,?);
+
 insert into board(btitle,bcontent,no,bcno) values("테스트제목2","테스트내용2",1,2);
 insert into board(btitle,bcontent,no,bcno) values("테스트제목3","테스트내용3",1,3);
 insert into board(btitle,bcontent,no,bcno) values("테스트제목4","테스트내용4",2,4);
@@ -78,6 +82,10 @@ insert into member(id , pw , name , email , phone) values("1234" , "1234" , "유
 insert into member(id , pw , name , email , phone) values("4567" , "4567" , "유재석2" , "123@123" , "010-0000-1111");
 
 select * from member;
+
+-- 카테고리 출력
+select * from bcategory;
+
 
 
 
