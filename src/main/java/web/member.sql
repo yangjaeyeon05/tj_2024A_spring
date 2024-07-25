@@ -86,6 +86,10 @@ select * from member;
 -- 카테고리 출력
 select * from bcategory;
 
+delete from board where bno = 16;
+
+update board set btitle = ? , bcontent = ? , bcno = ?
+
 
 
 
