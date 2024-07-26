@@ -1,7 +1,7 @@
 console.log('boardwrite.js');
 
 getBoardCategory();
-// loginCheck();
+loginCheck();
 
 // 1. 카테고리 호출 , 실행조건 : js열렸을 때
 function getBoardCategory(){
@@ -97,16 +97,22 @@ function bWrite(){
 }   // bWrite() end
 
 
+// * 로그인체크
 function loginCheck(){
+    console.log('loginCheck()');
     $.ajax({
-        async : false,
-        method : "GET",
-        url : "/member/my/info",
-        success : response => {
-            if (!response.id){
-                alert("먼저 로그인해 주세요.")
-                location.href="/member/login"
+        async:false,
+        method:'get',
+        url:"/member/login/check",
+        success:(r) =>{
+            console.log(r);
+            if(r==''){
+                alert('로그인 후 이용가능합니다.');
+                location.href="/board/getall";
             }
+        } ,
+        error : (e) => {
+            console.log(e)
         }
     })
 }

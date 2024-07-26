@@ -19,12 +19,14 @@ public class BoardDao extends Dao{
 
     // 1. 글 전체 출력
     public ArrayList<BoardDto> bAllPrint(){
+        System.out.println("BoardDao.bAllPrint");
         ArrayList<BoardDto> list = new ArrayList<>();
         try{
             String sql = "select *from board inner join member where board.no = member.no";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
+                // 레코드를 하나씩 조회해서 Dto vs Map 컬렉션
                 BoardDto boardDto = BoardDto.builder()
                         .bno(rs.getInt("bno"))
                         .btitle(rs.getString("btitle"))
@@ -87,13 +89,20 @@ public class BoardDao extends Dao{
     // 4. 상세페이지
     @GetMapping("/read")
     public BoardDto bRead(int bno){
+        System.out.println("BoardDao.bRead");
+        System.out.println("bno = " + bno);
         try{
-            String sql = "select * from board inner join member on board.no = member.no inner join bcategory on board.bcno = bcategory.bcno where bno = ?";
+            String sql = "select bc.bcno , bcname , bno , btitle , bcontent , id , bdate , bview , bfile " +
+                    " from board b " +
+                    " inner join member m " +
+                    " inner join bcategory bc " +
+                    " on b.no = m.no and b.bcno = bc.bcno where b.bno = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,bno);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 BoardDto boardDto = BoardDto.builder()
+                        .bcno(rs.getInt("bcno"))
                         .bcname(rs.getString("bcname"))
                         .bno(rs.getInt("bno"))
                         .btitle(rs.getString("btitle"))
@@ -101,6 +110,7 @@ public class BoardDao extends Dao{
                         .id(rs.getString("id"))
                         .bdate(rs.getString("bdate"))
                         .bview(rs.getInt("bview"))
+                        .bfile(rs.getString("bfile"))
                         .build();
                 return boardDto;
             }

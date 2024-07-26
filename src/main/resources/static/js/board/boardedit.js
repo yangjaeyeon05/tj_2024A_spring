@@ -4,8 +4,29 @@ let urlParams = new URL( location.href ).searchParams;
 let bno = urlParams.get('bno'); // 클릭된 게시물 번호
 console.log(bno);
 
+loginCheck();
 
 getBoardCategory();
+
+// * 로그인체크
+function loginCheck(){
+    console.log('loginCheck()');
+    $.ajax({
+        async:false,
+        method:'get',
+        url:"/member/login/check",
+        success:(r) =>{
+            console.log(r);
+            if(r==''){
+                alert('로그인 후 이용가능합니다.');
+                location.href="/board/getall";
+            }
+        } ,
+        error : (e) => {
+            console.log(e)
+        }
+    })
+}
 
 // 1. 카테고리 호출 , 실행조건 : js열렸을 때
 function getBoardCategory(){

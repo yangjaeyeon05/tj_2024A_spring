@@ -67,7 +67,13 @@ create table board(
 );
 select *from board;
 
-select * from board inner join member on board.no = member.no inner join bcategory on board.bcno = bcategory.bcno where bno = 4;
+-- 게시물 개별조회
+-- 3개 테이블 조인
+select bc.bcno , bcname , bno , btitle , bcontent , id , bdate , bview , bfile
+	from board b 
+		inner join member m 
+        inner join bcategory bc 
+			on b.no = m.no and b.bcno = bc.bcno where bno = 4;
 
 -- 글쓰기
 insert into board(btitle,bcontent,no,bcno) values("테스트제목1","테스트내용1",1,1);
@@ -87,8 +93,6 @@ select * from member;
 select * from bcategory;
 
 delete from board where bno = 16;
-
-update board set btitle = ? , bcontent = ? , bcno = ?
 
 
 
