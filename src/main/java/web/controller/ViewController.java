@@ -65,4 +65,10 @@ public class ViewController {
     public String bUpdate(){
         return "/board/boardedit.html";
     }
+
+    // 13. api관련
+    @GetMapping("/api")
+    public String api(){
+        return "/api/datago.html";
+    }
 }   // class end
