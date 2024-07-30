@@ -1,12 +1,9 @@
 package web.model.dao;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import web.model.dto.BoardDto;
 
-import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,13 +14,50 @@ import java.util.Map;
 @Component
 public class BoardDao extends Dao{
 
+    // 1-1 전체 게시물 수 반환 처리 , 조건추가1) 카테고리
+    public int getTotalBoardSize(int bcno){
+        try{
+            String sql = "select count(*) as 총게시물수 from board ";
+
+            // 카테고리가 존재하면 , 0 : 카테고리가 없다는 의미 , 1 이상 : 카테고리 pk 번호
+            if(bcno >= 1){
+                sql += " where bcno = "+bcno;
+            }
+            System.out.println("sql = " + sql);
+                // 1. 전체보기 : select count(*) as 총게시물수 from board
+                // 2. 카테고리보기 : select count(*) as 총게시물수 from board where bcno = 카테고리번호
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                int totalBoardSize = rs.getInt("총게시물수");
+                return totalBoardSize;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return 0;
+    }   // getBoardSize() end
+
     // 1. 글 전체 출력
-    public ArrayList<BoardDto> bAllPrint(){
+    public ArrayList<BoardDto> bAllPrint(int startRow , int pageBoardSize , int bcno){
         System.out.println("BoardDao.bAllPrint");
         ArrayList<BoardDto> list = new ArrayList<>();
         try{
-            String sql = "select *from board inner join member where board.no = member.no";
+            String sql = "select * " +                  // 1. 조회
+                    " from board inner join member " +  // 2. 조인 테이블
+                    " on board.no = member.no ";        // 3. 조인 조건
+            // - 전체보기이면 where절 생략 , bcno = 0
+            // - 카테고리별 보기이면 where절 추가 , bcno >= 1
+            if(bcno >= 1){
+                sql += " where bcno = " + bcno;         // 4. 일반조건
+            }
+            sql += " order by board.bno desc ";         // 5. 정렬 조건 , 내림차순
+            sql += " limit ? , ?";                      // 6. 레코드 제한 , 페이징 처리
+
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1 , startRow);
+            ps.setInt(2 , pageBoardSize);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 // 레코드를 하나씩 조회해서 Dto vs Map 컬렉션
