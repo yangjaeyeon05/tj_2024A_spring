@@ -36,8 +36,8 @@ public class BoardService {
         // 2. 페이지당 게시물을 출력할 시작 레코드 번호
         int startRow = (pageDto.getPage()-1)*pageBoardSize;
 
-        // 4. 전체 게시물 수 : 카테고리번호 별 전체 게시물
-        int totalBoardSize = boardDao.getTotalBoardSize(pageDto.getBcno());
+        // 4. 전체 게시물 수 : 카테고리번호 별 전체 게시물 , 검색 조건
+        int totalBoardSize = boardDao.getTotalBoardSize(pageDto.getBcno() , pageDto.getSearchKey() , pageDto.getSearchKeyword());
 
         System.out.println("totalBoardSize = " + totalBoardSize);
         // 3. totalPage : 전체 페이지 수 구하기
@@ -78,8 +78,8 @@ public class BoardService {
         int endBtn = startBtn + btnSize -1;
         // 만일 끝 번호가 마지막 페이지보다 커질 수 없다.
         if(endBtn >= totalPage)endBtn = totalPage;
-        // - 게시물 정보 조회 : 페이지 처리 , 카테고리 별
-        List<BoardDto> data = boardDao.bAllPrint(startRow , pageBoardSize , pageDto.getBcno());
+        // 6. 게시물 정보 조회 : 페이지 처리 , 카테고리 별 , 검색조건
+        List<BoardDto> data = boardDao.bAllPrint(startRow , pageBoardSize , pageDto.getBcno() , pageDto.getSearchKey() , pageDto.getSearchKeyword());
 
         // 반환 객체 구성
         BoardPageDto boardPageDto = BoardPageDto.builder()
@@ -97,6 +97,7 @@ public class BoardService {
     // 2. 글 쓰기 카테고리 불러오기
     // public ArrayList<BoardDto> getBoardCategory() {
     public List<Map<String, String>> getBoardCategory() {
+        System.out.println("BoardService.getBoardCategory");
         return boardDao.getBoardCategory();
     }
 
@@ -128,6 +129,9 @@ public class BoardService {
 
     // 4. 상세페이지
     public BoardDto bRead(int bno){
+        // 조회 수 증가 처리
+        boardDao.viewIncrease(bno);
+
         return boardDao.bRead(bno);
     }
 

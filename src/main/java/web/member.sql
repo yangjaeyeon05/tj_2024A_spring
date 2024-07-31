@@ -172,9 +172,24 @@ select * from board inner join member
     # JDBC
     # select * from board inner join member on board.no = member.no where bcno = ? order by board.bno desc limit ? , ?;
 
-
-
-
-
-
+-- 20240731 [검색/조회]
+	-- 1. 전체 레코드 조회
+select * from board;
+	-- 2. 특정 필드값의 레코드 조회
+select * from board where btitle = 'a';			# 'a'검색
+	-- 3. 특정 필드값이 포함된 레코드 조회
+select * from board where btitle like '%a';		# 'a'로 시작하는 값 검색
+select * from board where btitle like 'a%';		# 'a'로 끝나는 값 검색
+select * from board where btitle like '%a%';	# 'a'가 포함된 값 검색
+	-- 활용
+select * 									-- 1. 조회
+	from board inner join member			-- 2. 테이블 조인
+	on board.no = member.no					-- 3. 테이블 조인 조건
+    where bcno = 1 and btitle like '%테%'	-- 4. 일반조건 : 1. 카테고리조건 2. 검색조건
+    order by bno desc						-- 5. 정렬 조건
+    limit 0 , 5;						-- 레코드제한
+	-- 활용2
+select count(*) as 총게시물수
+	from board
+    where bcno = 1 and btitle like '%테%';
 

@@ -18,11 +18,12 @@ public class BoardController {
 
     // 1. 글 전체 출력
     @GetMapping("/all")
-    public BoardPageDto bAllPrint(
-            BoardPageDto PageDto
-            // 1. page : 페이징처리에서 사용할 현재 페이지 번호
-            // 2. bcno : 현재 선택된 카테고리(부모/상위) 번호
-    ){
+    public BoardPageDto bAllPrint(BoardPageDto PageDto){
+        // --- 매개변수
+        // 1. page : 페이징처리에서 사용할 현재 페이지 번호
+        // 2. bcno : 현재 선택된 카테고리(부모/상위) 번호
+        // 3. searchKey : 검색 조회 시 사용되는 필드명
+        // 4. searchKeyword : 검색 조회 시 사용되는 필드의 값
         System.out.println("BoardController.bAllPrint");
         System.out.println("PageDto = " + PageDto);
         return boardService.bAllPrint(PageDto);
@@ -32,6 +33,7 @@ public class BoardController {
     @GetMapping("/getcategory")
     // public ArrayList<BoardDto> getBoardCategory(){
     public List<Map<String , String>> getBoardCategory(){
+        System.out.println("BoardController.getBoardCategory");
         return boardService.getBoardCategory();
     }
 

@@ -15,13 +15,28 @@ import java.util.Map;
 public class BoardDao extends Dao{
 
     // 1-1 전체 게시물 수 반환 처리 , 조건추가1) 카테고리
-    public int getTotalBoardSize(int bcno){
+    public int getTotalBoardSize(int bcno , String searchKey , String searchKeyword){
         try{
-            String sql = "select count(*) as 총게시물수 from board ";
+            String sql = "select count(*) as 총게시물수 " +
+                    " from board inner join member on board.no = member.no";
 
             // 카테고리가 존재하면 , 0 : 카테고리가 없다는 의미 , 1 이상 : 카테고리 pk 번호
             if(bcno >= 1){
                 sql += " where bcno = "+bcno;
+            }
+            // 검색이 존재 했을 때 , keyword가 존재하면
+            if(searchKeyword.isEmpty()){    // 문자열이 비어있으면 , 검색이 없다라는 의미 뜻으로 활용
+
+            }else { // 비어있지 않으면 , 검색이 있다라는 의미의 뜻으로 활용
+                // - 카테고리가 있을때는 and 추가
+                if(bcno >= 1){
+                    sql += " and ";
+                }else { // - 카테고리가 없을때는[전체보기] where 추가
+                    sql += " where ";
+                }
+                // 검색 sql
+                sql += searchKey + " like '%"+searchKeyword+"%' ";
+
             }
             System.out.println("sql = " + sql);
                 // 1. 전체보기 : select count(*) as 총게시물수 from board
@@ -40,18 +55,31 @@ public class BoardDao extends Dao{
     }   // getBoardSize() end
 
     // 1. 글 전체 출력
-    public ArrayList<BoardDto> bAllPrint(int startRow , int pageBoardSize , int bcno){
+    public ArrayList<BoardDto> bAllPrint(int startRow , int pageBoardSize , int bcno , String searchKey , String searchKeyword){
         System.out.println("BoardDao.bAllPrint");
         ArrayList<BoardDto> list = new ArrayList<>();
         try{
             String sql = "select * " +                  // 1. 조회
                     " from board inner join member " +  // 2. 조인 테이블
                     " on board.no = member.no ";        // 3. 조인 조건
-            // - 전체보기이면 where절 생략 , bcno = 0
-            // - 카테고리별 보기이면 where절 추가 , bcno >= 1
+            // 4. 일반조건
+                // - 전체보기이면 where절 생략 , bcno = 0
+                // - 카테고리별 보기이면 where절 추가 , bcno >= 1
             if(bcno >= 1){
-                sql += " where bcno = " + bcno;         // 4. 일반조건
+                sql += " where bcno = " + bcno;
             }
+            // 4. 일반조건2
+            if(searchKeyword.isEmpty()){
+
+            }else {
+                if(bcno >= 1){
+                    sql += " and ";
+                }else { // - 카테고리가 없을때는[전체보기] where 추가
+                    sql += " where ";
+                }
+                sql += searchKey + " like '%"+searchKeyword+"%'";
+            }
+
             sql += " order by board.bno desc ";         // 5. 정렬 조건 , 내림차순
             sql += " limit ? , ?";                      // 6. 레코드 제한 , 페이징 처리
 
@@ -121,7 +149,6 @@ public class BoardDao extends Dao{
     }   // bWrite() end
 
     // 4. 상세페이지
-    @GetMapping("/read")
     public BoardDto bRead(int bno){
         System.out.println("BoardDao.bRead");
         System.out.println("bno = " + bno);
@@ -146,6 +173,7 @@ public class BoardDao extends Dao{
                         .bview(rs.getInt("bview"))
                         .bfile(rs.getString("bfile"))
                         .build();
+                System.out.println(boardDto);
                 return boardDto;
             }
         }catch (Exception e){
@@ -194,5 +222,21 @@ public class BoardDao extends Dao{
         }
         return false;
     }   // bUpdate() end
+
+    // 7. 조회 수 증가 처리
+    public boolean viewIncrease(int bno){
+        try{
+            String sql = "update board set bview = bview + 1 where bno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1 , bno);
+            int count = ps.executeUpdate();
+            if(count==1){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }   // viewIncrease() end
 
 }   // class end

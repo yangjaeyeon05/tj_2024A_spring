@@ -34,15 +34,19 @@ function boardRead(){ // 어디에 무엇을 {boardNo : brdNo, title : bTitle, u
         }
     })  // ajax end
     // 1. 어디에
-    let bcName = document.querySelector(".bcName").innerHTML = `${board.bcname}`;
-    let etcBox = document.querySelector(".etcBox").innerHTML = `${board.id}/${board.bview}/${board.bdate}`;
-    let bTitle = document.querySelector(".bTitle").innerHTML = `${board.btitle}`;
-    let bContent = document.querySelector(".bContent").innerHTML = `${board.bcontent}`;
-    let bfile = document.querySelector(".bfile").innerHTML = `${board.bfile} <a href="/file/download?filename=${board.bfile}">다운로드</a>`; 
-    let btnBox = document.querySelector(".btnBox").innerHTML = `<button class="btn btn-primary" type="button" onclick="location.href='/board/edit?bno=${bno}'">수정</button>
+    document.querySelector(".bcName").innerHTML = `${board.bcname}`;
+    document.querySelector(".etcBox").innerHTML = `<span> 작성자 ${board.id} </span>
+                                                    <span> 조회수 ${board.bview} </span>
+                                                    <span> 작성일 ${board.bdate} </span>`;
+    document.querySelector(".bTitle").innerHTML = `${board.btitle}`;
+    document.querySelector(".bContent").innerHTML = `${board.bcontent}`;
+    if( board.bfile == null){   // 첨부파일이 없을 때
+        document.querySelector(".bfile").innerHTML = '';
+    }else{  // 첨부파일이 있을 때
+        document.querySelector(".bfile").innerHTML = `${board.bfile.split('_')[1]} <a href="/file/download?filename=${board.bfile}">다운로드</a>`; 
+    }
+    document.querySelector(".btnBox").innerHTML = `<button class="btn btn-primary" type="button" onclick="location.href='/board/edit?bno=${bno}'">수정</button>
                                                                 <button class="btn btn-primary" type="button" onclick="bDelete(${bno})">삭제</button>`;
-
-
 }   // boardRead() end
 
 function bDelete(bno){
