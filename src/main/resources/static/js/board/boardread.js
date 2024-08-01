@@ -19,9 +19,14 @@ console.log(bno);
 // 한줄로 줄이기
 // let bno =  new URL(location.href).searchParams.get("bno");
 
+// 자신이 작성한 글에만 수정/삭제 버튼 보이도록
+// let boardcheck = false;
+// $.ajax({
+
+// })
 boardRead();
 //2. 페이지 열릴 때 출력하기 , 매개변수는 현재 게시물의 번호
-function boardRead(){ // 어디에 무엇을 {boardNo : brdNo, title : bTitle, userId : uId, bDate : writtenDate, bView : view, bContent : content}
+function boardRead(){ // 어디에 무엇을 {boardNo : bno, title : bTitle, userId : uId, bDate : writtenDate, bView : view, bContent : content}
     let board = {};
     $.ajax({
         async : false , 

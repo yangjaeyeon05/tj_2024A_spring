@@ -15,3 +15,10 @@
 .view > .etcBox > span{
     margin-right: 10px;
 }
+.viewBox > .btnBox{
+    border-top: 1px solid #eeeeee; padding: 15px 0px;
+}
+
+.viewBox > .bFile{
+    border-top: 1px solid #eeeeee; padding: 15px 0px;
+}
