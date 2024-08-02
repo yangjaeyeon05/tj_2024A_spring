@@ -3,6 +3,8 @@ package web.service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import web.model.dao.BoardDao;
 import web.model.dto.BoardDto;
 import web.model.dto.BoardPageDto;
@@ -131,7 +133,6 @@ public class BoardService {
     public BoardDto bRead(int bno){
         // 조회 수 증가 처리
         boardDao.viewIncrease(bno);
-
         return boardDao.bRead(bno);
     }
 
@@ -150,12 +151,37 @@ public class BoardService {
         System.out.println("BoardService.bUpdate");
         System.out.println("map = " + map);
         // 1. 로그인 세션에서 값 호출
-        MemberDto loginDto = memberService.doLoginCheck();
-        System.out.println("loginDto = " + loginDto);
-        if (loginDto == null) return false;
+        Object object = memberService.doLoginCheck();
+        System.out.println("object = " + object);
+        if (object == null) return false;
+        MemberDto loginDto = (MemberDto) object;
         int loginMno = loginDto.getNo();
         map.put("no", String.valueOf(loginMno));
         return boardDao.bUpdate(map);
     }   // bUpdate() end
+
+    // 7. 게시물의 댓글 쓰기 (기능) 처리 // 왜 postmapping이 없는지 컨트롤러가 통신 역할을 하고 서비스의 경우 비즈니스 로직을 실행하는 곳이기 때문 패턴 규칙
+    public boolean bReplyWrite(Map<String , String> map){
+        System.out.println("BoardService.bReplyWrite");
+        System.out.println("map = " + map);
+        // 작성자(no) 는 별도의 클라이언트로부터 입력받는 구조가 아니다.
+            // - 회원제 댓글이라는 가정(로그인 정보는 로그인 객체 저장된 상태)
+            // 왜? 로그인 정보는 세션 객체에 저장하는지 다른 곳에서 또 써야하기 때문에 사용자의 상태를 추적하기 위해
+        Object object = memberService.doLoginCheck();   // // 왜 ?? object 사용하는지?? 세션에 속성값을 저장하는 타입이 Object 타입이라서
+        if(object == null){
+            return false;
+        }
+        MemberDto loginDto = (MemberDto) object;
+        int no = loginDto.getNo();
+        map.put("no" , String.valueOf(no));     // int 타입을 String 타입으로 바꿔주기
+        return boardDao.bReplyWrite(map); // 왜 dao인지 -> controller service dao 관계 파악하기
+    }   // bReplyWrite() end
+
+    // 8. 댓글출력
+    public  List<Map<String , String>> bReplyRead(int bno){
+        System.out.println("BoardService.bReplyRead");
+        System.out.println("bno = " + bno);
+        return boardDao.bReplyRead(bno);
+    }   // bReplyRead() end
 
 }   // class end

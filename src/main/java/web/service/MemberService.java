@@ -76,8 +76,9 @@ public class MemberService {
     // 5. 마이페이지
     public MemberDto getMypage(){
         // 1. 로그인된 회원번호
-       MemberDto loginDto = doLoginCheck(); // 로그인된 세션 정보 요청
-       if(loginDto == null)return null; // 비로그인이면 리턴
+       Object object = doLoginCheck(); // 로그인된 세션 정보 요청
+       if(object == null)return null; // 비로그인이면 리턴
+        MemberDto loginDto = (MemberDto) object;
        int no = loginDto.getNo();
        // 2.
        return memberDao.getMypage(no);
@@ -108,10 +109,11 @@ public class MemberService {
     // 내정보수정
     public boolean doUpdate(Map<String , String> map){
         // 1. 현재 로그인도니 회원번호 추출
-        MemberDto loginDto = doLoginCheck();
-        if(loginDto==null){
+        Object object = doLoginCheck();
+        if(object==null){
             return false;
         }
+        MemberDto loginDto = (MemberDto) object;
         int loginNo = doLoginCheck().getNo();
         // 2. 로그인된 회원번호 map 엔트리에 추가
         map.put("no" , String.valueOf(loginNo));

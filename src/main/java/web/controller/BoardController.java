@@ -65,4 +65,24 @@ public class BoardController {
         return boardService.bUpdate(map);
     }   // bUpdate() end
 
+    // 7. 게시물의 댓글 쓰기 (기능) 처리
+    // ?? 왜 post 사용하는지?  // http://localhost:8080/board/reply/write // 관례적으로 글을 쓰는 행위를 하는 경우 postmapping을 쓴다.
+    @PostMapping("/reply/write")
+    public boolean bReplyWrite(@RequestBody Map<String , String> map){
+        // ?? 왜 @RequestBody 사용하는지 ??
+        // JS에서 객체를 jason문자열 타입으로 보내줬기 때문에 그 타입을 java 타입으로 변환하기 위해서
+        System.out.println("BoardController.bReplyWrite");
+        System.out.println("map = " + map);
+        // 왜? map을 사용하는 경우 특정 상황 기준에 자료들을 정리해 두면 검색 , 정렬 , 통계할 때 유용한데 이번 수업의 경우 dto 대신 map을 쓰는 연습을 하기 위해서
+        return boardService.bReplyWrite(map);
+    }   // bReplyWrite() end
+
+    // 8. 댓글출력
+    @GetMapping("/reply/read")
+    public  List<Map<String , String>> bReplyRead(int bno){
+        System.out.println("BoardController.bReplyRead");
+        System.out.println("bno = " + bno);
+        return boardService.bReplyRead(bno);
+    }   // bReplyRead() end
+
 }   // class end

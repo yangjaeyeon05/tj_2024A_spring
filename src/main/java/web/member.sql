@@ -67,6 +67,21 @@ create table board(
 );
 select *from board;
 
+-- 게시물의 댓글
+drop table if exists breply;
+create table breply(
+	brno bigint unsigned auto_increment, -- 댓글번호 [pk]
+    brindex int , -- 댓글 인덱스(댓글 위치 분류) , 0 : 최상위 댓글 , 1이상 : PK(brno)참조하는 상위 댓글 번호 (댓글답변 , 친구추가 기능의 경우 사용됨)
+	brcontent varchar(255) , -- 댓글내용
+    brdate datetime default now() , -- 댓글작성일
+    no bigint , -- 작성자
+    bno bigint unsigned, -- 댓글 위치한 게시물번호 [fk]
+    primary key(brno) , 
+    foreign key(no) references member(no) on delete cascade on update cascade , 
+    foreign key(bno) references board(bno) on delete cascade on update cascade
+);
+select * from breply;
+
 -- 게시물 개별조회
 -- 3개 테이블 조인
 select bc.bcno , bcname , bno , btitle , bcontent , id , bdate , bview , bfile
@@ -193,3 +208,4 @@ select count(*) as 총게시물수
 	from board
     where bcno = 1 and btitle like '%테%';
 
+select * from breply inner join member on breply.no = member.no;

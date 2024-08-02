@@ -2,6 +2,7 @@ package web.model.dao;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import web.model.dto.BoardDto;
 
 import java.sql.PreparedStatement;
@@ -223,7 +224,7 @@ public class BoardDao extends Dao{
         return false;
     }   // bUpdate() end
 
-    // 7. 조회 수 증가 처리
+    // *. 조회 수 증가 처리
     public boolean viewIncrease(int bno){
         try{
             String sql = "update board set bview = bview + 1 where bno = ?";
@@ -238,5 +239,52 @@ public class BoardDao extends Dao{
         }
         return false;
     }   // viewIncrease() end
+
+    // 7. 게시물의 댓글 쓰기 (기능) 처리
+    public boolean bReplyWrite(Map<String , String> map){
+        System.out.println("BoardDao.bReplyWrite");
+        System.out.println("map = " + map);
+        // brindex , brcontent , no , bno 왜?? 4가지를 저장하는지? DB컨셉이 디폴트 값을 제외해서 받아올 값이 4가지이니까
+        try {
+            String sql = "insert into breply(brindex , brcontent , no , bno) values(? , ? , ? , ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1 , Integer.parseInt(map.get("brindex")));    // map이 스트링 타입이므로 Integer.parseInt 강제 형변환 필요
+            ps.setString(2 , map.get("brcontent"));
+            ps.setInt(3 , Integer.parseInt(map.get("no")));
+            ps.setInt(4 , Integer.parseInt(map.get("bno")));
+            int count = ps.executeUpdate(); // 왜? if( count == 1 ) 하는지? executeUpdate의 반환 타입이 int 이기 때문에
+            if(count==1){
+                return true;    // 왜 true false 인지 댓글 쓰기의 성공여부 판단을 위해
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }   // bReplyWrite() end
+
+    // 8. 댓글출력
+    public  List<Map<String , String>> bReplyRead(int bno){
+        System.out.println("BoardDao.bReplyRead");
+        System.out.println("bno = " + bno);
+        List<Map<String, String>> list = new ArrayList<>();
+        try {
+            String sql = "select * from breply inner join member on breply.no = member.no where bno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,bno);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Map<String , String> map = new HashMap<>();
+                map.put("brno" , String.valueOf(rs.getInt("brno")));
+                map.put("brcontent" , rs.getString("brcontent"));
+                map.put("id" , rs.getString("id"));
+                map.put("brdate" , rs.getString("brdate"));
+                list.add(map);
+                System.out.println(list);
+            }
+        }catch (Exception e){
+
+        }
+        return list;
+    }   // bReplyRead() end
 
 }   // class end
