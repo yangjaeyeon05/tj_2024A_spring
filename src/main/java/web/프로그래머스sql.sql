@@ -65,6 +65,8 @@
     -- SELECT ID FROM ECOLI_DATA WHERE BIN(CONVERT(GENOTYPE,BINARY)) LIKE "1___";     4를 포함한 형질 3개
     -- 4를 포함한 구문 제외해서 WHERE 조건 구문 생성
     -- BIN(CONVERT(GENOTYPE,BINARY)) LIKE "%1__" 구문을 넣을 경우 오류 발생 으로 __ -> 00으로 대체
+    SELECT COUNT(*) AS COUNT FROM ECOLI_DATA WHERE NOT (GENOTYPE & 2) AND (GENOTYPE & 1 OR GENOTYPE & 4)
+    -- 2를 제외하고 1 , 4 를 이진수로 변환 시 1 ,3 의 형질을 포함하게 된다. 그래서 COUNT 2
     # 11. [GROUP BY]자동차 종류 별 특정 옵션이 포함된 자동차 수 구하기
     SELECT CAR_TYPE , COUNT(*) AS CARS FROM CAR_RENTAL_COMPANY_CAR
     	WHERE OPTIONS LIKE "%가죽시트%" OR OPTIONS LIKE "%통풍시트%" OR OPTIONS LIKE "%열선시트%"
