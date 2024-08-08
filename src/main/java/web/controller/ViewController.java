@@ -71,4 +71,16 @@ public class ViewController {
     public String api(){
         return "/api/datago.html";
     }
+
+    // 14. 제품등록
+    @GetMapping("/product/register")
+    public String pRegister(){
+        return "/product/register.html";
+    }
+
+    // 15. 제품 출력
+    @GetMapping("/product")
+    public String product(){
+        return "/product/product.html";
+    }
 }   // class end

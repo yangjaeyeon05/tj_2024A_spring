@@ -14,19 +14,27 @@ import java.util.UUID;
 
 @Service
 public class FileService {
+    /*
+        프로젝트명
+            - build 폴더 : 배포된 클래스/파일들
+            - src 폴더 : 배포 전 개발자가 코드(파일) 작성하는 곳
+        배포 : 내 코드를 웹서버에 올림/빌드 으로써 외부(클라이언트)로 부터 리소스 제공할 수 있다.
+     */
 
     // 0. 파일이 저장된 위치 경로 정의 필드
-    String uploadPath = "C:\\Users\\tj-bu-703-008\\Desktop\\tj_2024A_spring\\src\\main\\resources\\static\\upload\\";
-
+        // [배포 전]프로젝트내 src -> upload 개발자 코드 프로젝트 내 업로드 경로
+    // String uploadPath = "C:\\Users\\tj-bu-703-008\\Desktop\\tj_2024A_spring\\src\\main\\resources\\static\\upload\\";
+        // [배포 후]프로젝트내 build -> upload 폴더 경로
+    String uploadPath = "C:\\Users\\tj-bu-703-008\\Desktop\\tj_2024A_spring\\build\\resources\\main\\static\\upload\\";
     // 1. 파일 업로드 :
         // 매개변수로 파일의 바이트가 저장된 MultipartFile 인터페이스
         // 업로드된 파일명 반환
     public String fileUpload(MultipartFile multipartFile){
 
-        System.out.println(multipartFile.getContentType()); // 파일의 확장자
-        System.out.println(multipartFile.getName());    // 속성명
-        System.out.println(multipartFile.getSize());    // 파일의 바이트 사이즈/용량
-        System.out.println(multipartFile.isEmpty());    // 파일이 없으면 true 있으면 false
+        // System.out.println(multipartFile.getContentType()); // 파일의 확장자
+        // System.out.println(multipartFile.getName());    // 속성명
+        // System.out.println(multipartFile.getSize());    // 파일의 바이트 사이즈/용량
+        // System.out.println(multipartFile.isEmpty());    // 파일이 없으면 true 있으면 false
 
         // 1. 첨부 파일의 실제 이름 추출
             // + 클라이언트(유저)들이 서로 다른 파일내용의 같은 파일명으로 업로드했을 때 식별이 불가능.
